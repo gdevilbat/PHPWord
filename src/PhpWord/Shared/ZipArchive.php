@@ -248,7 +248,11 @@ class ZipArchive
         $tempFile = false;
         if ($filenameParts['basename'] != $localnameParts['basename']) {
             $tempFile = true; // temp file created
-            $temppath = $this->tempDir . DIRECTORY_SEPARATOR . $localnameParts['basename'];
+            $dirPath = $this->tempDir . DIRECTORY_SEPARATOR . md5(microtime());
+            if (!file_exists($dirPath)) {
+                mkdir($dirPath, 0777, true);
+            }
+            $temppath = $dirPath .DIRECTORY_SEPARATOR. $localnameParts['basename'];
             copy($filename, $temppath);
             $filename = $temppath;
             $filenameParts = pathinfo($temppath);
@@ -267,8 +271,8 @@ class ZipArchive
 
         if ($tempFile) {
             // Remove temp file, if created
-            if(file_exists($this->tempDir . DIRECTORY_SEPARATOR . $localnameParts['basename'])){
-                unlink($this->tempDir . DIRECTORY_SEPARATOR . $localnameParts['basename']);
+            if(file_exists($temppath)){
+                unlink($temppath);
             }
         }
 
