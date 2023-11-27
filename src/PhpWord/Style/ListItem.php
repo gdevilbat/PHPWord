@@ -133,6 +133,17 @@ class ListItem extends AbstractStyle
         return $this;
     }
 
+    public function setElementNumId($id){
+        $numStyleObject = Style::getStyle($this->numStyle);
+
+        if ($numStyleObject instanceof Numbering) {
+            $numStyleObject->setNumId($id);
+            $this->numId = $id;
+        }
+
+        return $this;
+    }
+
     /**
      * Get numbering Id.
      *
